@@ -82,7 +82,7 @@ static_html_pages = ['index.html', 'latest/genindex.html', 'latest/index.html', 
 
 def copy_static_html_pages(app, exception):
     logger.info('Copying static html pages...')
-    if exception is None and app.builder.name == 'html':
+    if exception is None and (app.builder.name == 'html' or app.builder.name == 'readthedocs'):
         for static_html_page in static_html_pages:
             target_path = Path(app.outdir + '/' + static_html_page)
             src_path = Path(app.srcdir + '/' + static_html_page)
