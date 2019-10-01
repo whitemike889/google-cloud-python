@@ -64,7 +64,7 @@ source_parsers = {
    '.md': 'recommonmark.parser.CommonMarkParser',
 }
 
-master_doc = '404'
+master_doc = 'index'
 
 # The suffix of source filenames.
 source_suffix = ['.rst', '.md']
