@@ -27,6 +27,7 @@ import email
 import os
 import pkg_resources
 import shutil
+from pathlib import Path
 
 from sphinx.util import logging
 
@@ -82,11 +83,13 @@ static_html_pages = ['index.html', 'latest/genindex.html', 'latest/index.html', 
 def copy_static_html_pages(app, exception):
     if exception is None and app.builder.name == 'html':
         for static_html_page in static_html_pages:
-            target_path = app.outdir + '/' + static_html_page
-            src_path = app.srcdir + '/' + static_html_page
+            target_path = Path(app.outdir + '/' + static_html_page)
+            src_path = Path(app.srcdir + '/' + static_html_page)
             if os.path.isfile(src_path):
                 logger.info(
                     'Copying static html: %s -> %s', src_path, target_path)
+                if not target_path.parent.exists():
+                    target_path.parent.mkdir(parents=True)
                 shutil.copyfile(src_path, target_path)
 
 def setup(app):
