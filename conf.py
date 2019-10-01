@@ -66,12 +66,6 @@ source_parsers = {
 # The suffix of source filenames.
 source_suffix = ['.rst', '.md']
 
-# The encoding of source files.
-#source_encoding = 'utf-8-sig'
-
-# The master toctree document.
-master_doc = 'index'
-
 # General information about the project.
 project = u'google-cloud'
 copyright = u'2014-2017, Google'
