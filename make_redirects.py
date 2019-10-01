@@ -107,8 +107,8 @@ def make_redirects(dirname, ext=".html"):
     could not be determined.
 	"""
     GOOGLEAPIS_ROOT = f"https://googleapis.dev/python"
-    content_page_regex = fr"{dirname}\/(?P<api>[^\/]*?)\/(?P<path>.*)"
-    module_page_regex = fr"{dirname}\/_modules\/(?P<path>.*)"
+    content_page_regex = fr"(?P<api>[^\/]*?)\/(?P<path>.*)"
+    module_page_regex = fr"_modules\/(?P<path>.*)"
 
     redirects = {}
     bad_paths = []
@@ -165,6 +165,7 @@ def make_redirects(dirname, ext=".html"):
     return redirects, bad_paths
 
 def add_redirect(path, url):
+    path = Path(path)
     HTML_TEMPLATE = f"""<html>
 <head>
  <meta http-equiv="refresh" content="1; url={url}" />
@@ -176,57 +177,30 @@ def add_redirect(path, url):
 """
     with open(path, "w") as f:
         f.write(HTML_TEMPLATE)
-
-
-def add_redirect_to_md(path, url):
-    MD_TEMPLATE = f"""---
-redirect_to: "{url}"
----
-
-"""
-    with open(path, "w") as f:
-        f.write(MD_TEMPLATE)
-
+    
+    # rename if the file isn't already html
+    if path.suffix != '.html':
+        path.rename(path.with_suffix('.html'))
 
 if __name__ == "__main__":
-
-    #########################
-    ## Redirects for /latest
-    #########################
-    redirects, bad_paths = make_redirects("latest")
+    redirects, bad_paths = make_redirects(".", ext=".md")
 
     print("An appropriate API could not be determined for these paths.")
     for path in bad_paths:
         print(f"* {path}")
-
 
     for path, url in redirects.items():
         resp = requests.get(url)
         if resp.status_code == 200:
             add_redirect(path, url)
         else:
-            print(f"404: {url}")
-
-
-    ###########################
-    ## Redirects for /stable
-    ###########################
-    redirects, bad_paths = make_redirects("stable", ext=".md")
-
-    print("An appropriate API could not be determined for these paths.")
-    for path in bad_paths:
-        print(f"* {path}")
-
-    for path, url in redirects.items():
-        resp = requests.get(url)
-        if resp.status_code == 200:
-            add_redirect_to_md(path, url)
-        else:
             # Stable has some older pages that don't exist on latest
             # Redirect them to the API index page
             url = re.sub(r"(?P<url>.*?latest)\/.*", r"\g<1>", url)
             resp = requests.get(url)
             if resp.status_code == 200:
-                add_redirect_to_md(path, url)
+                add_redirect(path, url)
             else:
                 print(f"404: {url}")
+
+    # rename .md files to .html
