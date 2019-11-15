@@ -2596,7 +2596,6 @@ class TablesClient(object):
         model=None,
         model_name=None,
         model_display_name=None,
-        params=None,
         project=None,
         region=None,
         **kwargs
@@ -2643,9 +2642,6 @@ class TablesClient(object):
                 The `model` instance you want to predict with . This must be
                 supplied if `model_display_name` or `model_name` are not
                 supplied.
-            params (dict[str, str]):
-                `feature_importance` can be set as True to enable local
-                explainability. The default is false.
 
         Returns:
             A :class:`~google.cloud.automl_v1beta1.types.PredictResponse`
@@ -2687,7 +2683,7 @@ class TablesClient(object):
 
         request = {"row": {"values": values}}
 
-        return self.prediction_client.predict(model.name, request, params, **kwargs)
+        return self.prediction_client.predict(model.name, request, **kwargs)
 
     def batch_predict(
         self,
