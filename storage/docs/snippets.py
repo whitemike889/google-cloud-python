@@ -23,7 +23,10 @@ a ``to_delete`` list;  the function adds to the list any objects created which
 need to be deleted during teardown.
 """
 
+# [START storage_get_started]
 from google.cloud import storage
+
+# [END storage_get_started]
 
 
 def snippet(func):
