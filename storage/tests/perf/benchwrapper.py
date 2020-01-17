@@ -24,6 +24,11 @@ args = parser.parse_args()
 if args.port is None:
     sys.exit("Usage: python3 main.py --port 8081")
 
+import os
+files = [f for f in os.listdir('.') if os.path.isfile(f)]
+for f in files:
+    print(f)
+
 #client = storage.Client.create_anonymous_client()
 client = storage.Client()
 
