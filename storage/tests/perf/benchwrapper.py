@@ -12,10 +12,10 @@ _ONE_DAY_IN_SECONDS = 60 * 60 * 24
 
 parser = argparse.ArgumentParser()
 
-if os.environ.get("STORAGE_EMULATOR_HOST") is None:
-    sys.exit(
-        "This benchmarking server only works when connected to an emulator. Please set STORAGE_EMULATOR_HOST."
-    )
+# if os.environ.get("STORAGE_EMULATOR_HOST") is None:
+#     sys.exit(
+#         "This benchmarking server only works when connected to an emulator. Please set STORAGE_EMULATOR_HOST."
+#     )
 
 parser.add_argument("--port", help="The port to run on.")
 
