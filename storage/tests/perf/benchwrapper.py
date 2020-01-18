@@ -25,6 +25,7 @@ if args.port is None:
     sys.exit("Usage: python3 main.py --port 8081")
 
 import os
+print("files at tmpfs")
 files = [f for f in os.listdir('/tmpfs/src/gfile/') if os.path.isfile(f)]
 for f in files:
     print(f)
